@@ -1,0 +1,46 @@
+
+
+services:
+  php:
+    image: php:8.0-apache
+    container_name: php
+    ports:
+      - "80:80"
+    volumes:
+      # ./wwwにあるファイルをコンテナの/var/www/htmlにマウント
+      - ./www:/var/www/html
+    depends_on:
+      - db
+
+  db:
+    image: mysql:latest
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      # データベース名 (適時変更)
+      MYSQL_DATABASE: my_database
+      # phpmyadminでも使用する
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin
+    ports:
+      # phpmyadminのポート `80` -> `8080`にマッピング
+      - "8080:80"
+    environment:
+      # ホストは`コンテナ名`で指定
+      PMA_HOST: db
+      PMA_USER: user
+      PMA_PASSWORD: password
+    depends_on:
+      - db
+
+volumes:
+  # dbのデータを永続化するためのボリューム (これを削除するとデータは消える)
+  db_data:
