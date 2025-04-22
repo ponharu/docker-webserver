@@ -2,13 +2,14 @@
 
 services:
   php:
-    image: php:8.0-apache
+    build: ./docker/php
     container_name: php
     ports:
       - "80:80"
     volumes:
+      - ./docker/php/php.ini:/usr/local/etc/php/php.ini
       # ./wwwにあるファイルをコンテナの/var/www/htmlにマウント
-      - ./www:/var/www/html
+      - ./www:/var/www/html:cached
     depends_on:
       - db
 
