@@ -37,8 +37,8 @@ services:
     environment:
       # ホストは`コンテナ名`で指定
       PMA_HOST: db
-      PMA_USER: user
-      PMA_PASSWORD: password
+      PMA_USER: root
+      PMA_PASSWORD: root
     depends_on:
       - db
 
